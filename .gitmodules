@@ -1,0 +1,3 @@
+[submodule "ubuntu-firecracker"]
+	path = ubuntu-firecracker
+	url = https://github.com/bkleiner/ubuntu-firecracker.git
