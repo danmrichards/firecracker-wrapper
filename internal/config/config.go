@@ -10,7 +10,6 @@ type WrapperConfig struct {
 	KernelImg      string
 	KernelOpts     string
 	RootFS         string
-	RootSize       int
 	NumCPUs        int64
 	Memory         int64
 	WorkloadSrc    string
@@ -29,7 +28,6 @@ func (w *WrapperConfig) BindFlags(fs *flag.FlagSet) {
 	fs.StringVar(&w.KernelImg, "kernel-image", "", "Path to the kernel image")
 	fs.StringVar(&w.KernelOpts, "kernel-opts", "ro console=ttyS0 noapic reboot=k panic=1 pci=off nomodules", "Kernel commandline")
 	fs.StringVar(&w.RootFS, "rootfs", "", "Path to root disk image")
-	fs.IntVar(&w.RootSize, "rootfs-size", 5, "Size, in GiB, for the root filesystem")
 	fs.Int64Var(&w.NumCPUs, "numcpus", 1, "Number of CPUs for the VM")
 	fs.Int64Var(&w.Memory, "memory", 512, "VM memory, in MiB")
 	fs.StringVar(&w.WorkloadSrc, "workload-src", "", "Path to the directory containing the workload")
