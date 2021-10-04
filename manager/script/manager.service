@@ -1,0 +1,8 @@
+[Unit]
+Description=Process Manager Service
+
+[Service]
+ExecStart=/opt/manager-linux-amd64
+
+[Install]
+WantedBy=multi-user.target

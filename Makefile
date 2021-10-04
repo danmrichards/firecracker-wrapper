@@ -1,9 +1,16 @@
 GOARCH=amd64
-BINARY=fcw
+NIC?=eth0
 
 .PHONY: build
-build:
-	GOOS=linux go build -ldflags="-s -w" -o bin/${BINARY}-linux-${GOARCH} ./cmd/main.go
+build: build-wrapper build-manager
+
+.PHONY: build-wrapper
+build-wrapper:
+	GOOS=linux go build -ldflags="-s -w" -o bin/wrapper-linux-${GOARCH} ./cmd/wrapper/main.go
+
+.PHONY: build-manager
+build-manager:
+	GOOS=linux go build -ldflags="-s -w" -o bin/manager-linux-${GOARCH} ./cmd/manager/main.go
 
 .PHONY: lint
 lint:
@@ -18,13 +25,16 @@ deps:
 	go mod verify && \
 	go mod tidy
 
-.PHONY: ubuntu-firecracker
-ubuntu-firecracker:
-	git submodule init
-	git submodule update --remote 'ubuntu-firecracker'
+.PHONY: tap
+tap:
+	sudo ip tuntap add tap0 mode tap && \
+	sudo ip addr add 172.16.0.1/24 dev tap0 && \
+    sudo ip link set tap0 up && \
+    sudo sh -c "echo 1 > /proc/sys/net/ipv4/ip_forward" && \
+    sudo iptables -t nat -A POSTROUTING -o ${NIC} -j MASQUERADE && \
+    sudo iptables -A FORWARD -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT && \
+    sudo iptables -A FORWARD -i tap0 -o ${NIC} -j ACCEPT
 
-.PHONY: images
-images:
-	cd ubuntu-firecracker && \
-	docker build -t ubuntu-firecracker -f ./ubuntu-firecracker/Dockerfile ./ubuntu-firecracker && \
-	docker run --privileged -it --rm -v $(pwd)/output:/output ubuntu-firecracker
+.PHONY: cleantap
+cleantap:
+	sudo ip link del tap0

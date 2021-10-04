@@ -58,6 +58,8 @@ func (w *Wrapper) RunVM(ctx context.Context, logger *logrus.Logger, vm *vm.VM) e
 		return fmt.Errorf("create machine: %w", err)
 	}
 
+	// TODO: Start VM in a goroutine.
+
 	if err = m.Start(vmmCtx); err != nil {
 		return fmt.Errorf("start machine: %w", err)
 	}
@@ -67,6 +69,8 @@ func (w *Wrapper) RunVM(ctx context.Context, logger *logrus.Logger, vm *vm.VM) e
 	if err = m.Wait(vmmCtx); err != nil {
 		return fmt.Errorf("vm wait: %w", err)
 	}
+
+	// TODO: Start workload
 
 	return nil
 }

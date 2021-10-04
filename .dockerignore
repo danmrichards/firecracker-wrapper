@@ -1,0 +1,9 @@
+cmd
+data
+go.mod
+go.sum
+internal
+LICENSE
+manager/output
+Makefile
+README.md

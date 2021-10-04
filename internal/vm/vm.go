@@ -64,6 +64,14 @@ func New(id string, cfg *config.WrapperConfig) (*VM, error) {
 				VcpuCount:  firecracker.Int64(cfg.NumCPUs),
 			},
 			DisableValidation: false,
+			NetworkInterfaces: firecracker.NetworkInterfaces{
+				{
+					StaticConfiguration: &firecracker.StaticNetworkConfiguration{
+						MacAddress:  "AA:FC:00:00:00:01",
+						HostDevName: "tap0",
+					},
+				},
+			},
 		},
 	}, nil
 }

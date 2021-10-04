@@ -34,7 +34,7 @@ func main() {
 		logger.Fatal(err)
 	}
 
-	if err = rootfs.PrepareWorkload(fvm, cfg.WorkloadSrc, cfg.WorkloadDst, cfg.WorkloadExe); err != nil {
+	if err = rootfs.PrepareWorkload(fvm, cfg.WorkloadSrc, cfg.WorkloadDst); err != nil {
 		logger.Fatal(err)
 	}
 

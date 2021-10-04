@@ -1,0 +1,10 @@
+[Unit]
+Description=Setup network
+
+[Service]
+Type=oneshot
+ExecStart=/opt/init-network.sh
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target
